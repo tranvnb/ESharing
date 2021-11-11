@@ -1,0 +1,2 @@
+rootProject.name = "ESharing"
+include ':app'
