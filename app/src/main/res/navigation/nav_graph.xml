@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.expensemanager.SplashMainFragment"
+        android:label="fragment_splash_main"
+        tools:layout="@layout/fragment_splash_main" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.expensemanager.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_regFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" >
+            <argument
+                android:name="userId"
+                android:defaultValue="null" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.expensemanager.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.expensemanager.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_addexpenseFragment"
+            app:destination="@id/addexpensesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addexpensesFragment"
+        android:name="com.example.expensemanager.AddExpensesFragment"
+        android:label="fragment_addexpenses"
+        tools:layout="@layout/fragment_add_expenses" >
+        <action
+            android:id="@+id/action_addexpensesFragment_to_displayexpenseFragment"
+            app:destination="@id/displayexpensesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/displayexpensesFragment"
+        android:name="com.example.expensemanager.DisplayExpensesFragment"
+        android:label="fragment_displayexpenses"
+        tools:layout="@layout/fragment_display_expenses" >
+        <action
+            android:id="@+id/action_displayexpensesFragment_to_updateexpensesFragment"
+            app:destination="@id/updateexpensesFragment">
+        </action>
+<!--        <argument-->
+<!--            android:name="currentPurchase"-->
+<!--            app:argType="com.example.expensemanager.PurchaseEntity" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateexpensesFragment"
+        android:name="com.example.expensemanager.UpdateFragment"
+        android:label="fragment_updateexpenses"
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_to_displayexpenseFragment"
+            app:destination="@id/displayexpensesFragment">
+        </action>
+        <argument
+            android:name="currentPurchase"
+            app:argType="com.example.expensemanager.database.PurchaseEntity" />
+
+    </fragment>
+
+</navigation>
