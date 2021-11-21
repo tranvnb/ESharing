@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">ESharing</string>
+    <string name="app_name">ExpenseManager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txtWelcome">Welcome</string>
+    <string name="edtxtUser">Enter User Name</string>
+    <string name="edtxtPass">Enter Password</string>
+    <string name="btnLogin">Login</string>
+    <string name="txtNewUser">New User? Please Register</string>
+    <string name="btnReg">Register</string>
+    <string name="imgDescLogin">Login Expense</string>
+    <string name="txtPersD">Personal Details</string>
+    <string name="edtxtFName">Enter First Name</string>
+    <string name="edtxtLstName">Enter Last Name</string>
+    <string name="edtxtEmail">Enter Email</string>
+    <string name="edtxtPhno">Enter Phone Number</string>
+    <string name="btnRegSub">Register</string>
+    <string name="edtxtRegPass">Enter Password</string>
+    <string name="edtxtConPass">Confirm Password</string>
+    <string name="btnLetGo">Let Go</string>
+    <string name="btnGoReg">Register</string>
+    <string name="txtExistUser">Already a user? Login</string>
+    <string name="btnGoLogin">Login</string>
+    <string name="btnAddExpenses">Add Your Expenses</string>
 </resources>
