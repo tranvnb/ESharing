@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.expensemanager.SplashMainFragment"
+        android:name="com.lf.esharing.SplashMainFragment"
         android:label="fragment_splash_main"
         tools:layout="@layout/fragment_splash_main" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.expensemanager.LoginFragment"
+        android:name="com.lf.esharing.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.expensemanager.RegistrationFragment"
+        android:name="com.lf.esharing.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.expensemanager.DashboardFragment"
+        android:name="com.lf.esharing.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/addexpensesFragment"
-        android:name="com.example.expensemanager.AddExpensesFragment"
+        android:name="com.lf.esharing.AddExpensesFragment"
         android:label="fragment_addexpenses"
         tools:layout="@layout/fragment_add_expenses" >
         <action
@@ -64,21 +64,21 @@
 
     <fragment
         android:id="@+id/displayexpensesFragment"
-        android:name="com.example.expensemanager.DisplayExpensesFragment"
+        android:name="com.lf.esharing.DisplayExpensesFragment"
         android:label="fragment_displayexpenses"
         tools:layout="@layout/fragment_display_expenses" >
         <action
             android:id="@+id/action_displayexpensesFragment_to_updateexpensesFragment"
             app:destination="@id/updateexpensesFragment">
         </action>
-<!--        <argument-->
-<!--            android:name="currentPurchase"-->
-<!--            app:argType="com.example.expensemanager.PurchaseEntity" />-->
+        <argument
+            android:name="currentPurchase"
+            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />
     </fragment>
 
     <fragment
         android:id="@+id/updateexpensesFragment"
-        android:name="com.example.expensemanager.UpdateFragment"
+        android:name="com.lf.esharing.UpdateFragment"
         android:label="fragment_updateexpenses"
         tools:layout="@layout/fragment_update" >
         <action
@@ -87,7 +87,7 @@
         </action>
         <argument
             android:name="currentPurchase"
-            app:argType="com.example.expensemanager.database.PurchaseEntity" />
+            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />
 
     </fragment>
 
