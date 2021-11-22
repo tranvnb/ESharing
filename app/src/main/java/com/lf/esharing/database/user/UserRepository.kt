@@ -1,5 +1,7 @@
 package com.lf.esharing.database.user
 
+import com.lf.esharing.database.purchase.PurchaseEntity
+
 class UserRepository(val userDao: UserDao, val userApi: UserApi = UserClient.getInstance()) {
 
     suspend fun login(username: String, password: String): Boolean {
@@ -9,5 +11,13 @@ class UserRepository(val userDao: UserDao, val userApi: UserApi = UserClient.get
 
     suspend fun getUsers(): List<UserEntity>? {
         return userApi.allUsers().body()
+    }
+
+    suspend fun getMembers(username: String): List<String>? {
+        return userApi.getMembers(username).body()
+    }
+
+    suspend fun getPurchases(username: String): List<PurchaseEntity>? {
+        return userApi.getPurchases(username).body()
     }
 }

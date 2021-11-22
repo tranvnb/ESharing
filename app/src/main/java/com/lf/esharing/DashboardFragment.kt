@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.database.user.UserEntity
 import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentDashboardBinding
@@ -37,6 +38,13 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
             println(MoshiHelper.toJson(UserEntity::class.java, it))
+        })
+        userViewModel.getMembers("username").observe(viewLifecycleOwner, Observer {
+            println(MoshiHelper.toJson(String::class.java, it))
+        })
+
+        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
+            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
         })
     }
 
