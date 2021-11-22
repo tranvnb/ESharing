@@ -1,10 +1,8 @@
 package com.lf.esharing.database.user
 
+import com.lf.esharing.database.purchase.PurchaseEntity
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserApi {
     @GET("all")
@@ -16,4 +14,19 @@ interface UserApi {
     )
     @POST("login")
     suspend fun login(@Body body: Map<String, String>): Response<Map<String, String>>
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("{username}/members")
+    suspend fun getMembers(@Path("username") username: String): Response<List<String>> // get list member of this user
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("{username}/purchases")
+    suspend fun getPurchases(@Path("username") username: String): Response<List<PurchaseEntity>> // get list purchase of this user
+
 }
