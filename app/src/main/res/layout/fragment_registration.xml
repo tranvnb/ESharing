@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
-    tools:context=".RegistrationFragment">
+    tools:context="com.lf.esharing.RegistrationFragment">
 
     <TextView
         android:id="@+id/txtPersD"

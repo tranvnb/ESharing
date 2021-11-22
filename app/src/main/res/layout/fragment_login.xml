@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
-    tools:context=".LoginFragment">
+    tools:context="com.lf.esharing.LoginFragment">
 
     <TextView
         android:id="@+id/txtWelcome"
