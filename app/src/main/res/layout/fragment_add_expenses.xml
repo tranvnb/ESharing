@@ -27,14 +27,24 @@
         android:inputType="textPersonName"
         android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/edDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter Date"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edDate"
+            android:layout_width="281dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="Enter Date"
+            android:inputType="datetime|textPersonName"
+            android:minHeight="48dp" />
+        <Button
+            android:id="@+id/btnChooseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="..."/>
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/edStoreName"

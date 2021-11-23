@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.database.purchase.PurchaseViewModel
+import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentUpdateBinding
 import com.lf.esharing.utils.DateConverter
+import com.lf.esharing.utils.Validator.inputCheck
+import java.time.LocalDateTime
 
 class UpdateFragment : Fragment() {
 
@@ -38,7 +41,7 @@ class UpdateFragment : Fragment() {
         mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
 
         binding.updateedPurchaseId.setText(args.currentPurchase.id.toString())
-        binding.updateedPurchaseType.setText(args.currentPurchase.purchaseType)
+        binding.updateedPurchaseType.setText(args.currentPurchase.itemspurchased)
         binding.updateedDate.setText(DateConverter.FORMATTER.format(args.currentPurchase.purcdate))
         binding.updateedStoreName.setText(args.currentPurchase.storename)
         binding.updateedStoreLocation.setText(args.currentPurchase.storelocation)
@@ -64,11 +67,10 @@ class UpdateFragment : Fragment() {
 
         if (inputCheck(purchaseType, purchaseDate, storeName, storeLoc, purTotal!!)) {
             // Create User Object
-            val updatedPurchase = PurchaseEntity( purchaseType, purchaseDate, storeName, storeLoc
-            ,purTotal!!)
+            val updatedPurchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
 
             // Update Current User
-            mPurchaseViewModel.updatePurchase(updatedPurchase)
+            mPurchaseViewModel.updatePurchase(updatedPurchase, UserViewModel.username, UserViewModel.password)
             Toast.makeText(requireContext(), "Updated Successfully !", Toast.LENGTH_SHORT).show()
 
             // Navigate back to List Fragment
@@ -76,15 +78,6 @@ class UpdateFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Please fill all fields !", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun inputCheck(
-        purchaseType: String,
-        purchaseDate: String, storeName: String,
-        storeLoc: String,
-        purTotal: Double?): Boolean{
-        return !(TextUtils.isEmpty(purchaseType) && TextUtils.isEmpty(purchaseDate) && TextUtils.isEmpty(storeName)
-                && TextUtils.isEmpty(storeLoc) && purTotal == null)
     }
 
     // Inflate the layout to our menu
@@ -107,14 +100,14 @@ class UpdateFragment : Fragment() {
            // mPurchaseViewModel.deletePurchase(args.currentPurchase)    // Execute : delete user
             Toast.makeText(                                // Notification if a user is deleted successfully
                 requireContext(),
-                "Successfully removed ${args.currentPurchase.purchaseType}",
+                "Successfully removed ${args.currentPurchase.itemspurchased}",
                 Toast.LENGTH_SHORT)
                 .show()
             findNavController().navigate(R.id.action_updateFragment_to_displayexpenseFragment) // Navigate to List Fragment after deleting a user
         }
         builder.setNegativeButton("No") { _, _ -> }    // Make a "No" option and set action if the user selects "No"
-        builder.setTitle("Delete ${args.currentPurchase.purchaseType} ?")  // Set the title of the prompt with a sentence saying the first name of the user inside the app (using template string)
-        builder.setMessage("Are you sure to remove ${args.currentPurchase.purchaseType} ?")  // Set the message of the prompt with a sentence saying the first name of the user inside the app (using template string)
+        builder.setTitle("Delete ${args.currentPurchase.itemspurchased} ?")  // Set the title of the prompt with a sentence saying the first name of the user inside the app (using template string)
+        builder.setMessage("Are you sure to remove ${args.currentPurchase.itemspurchased} ?")  // Set the message of the prompt with a sentence saying the first name of the user inside the app (using template string)
         builder.create().show()  // Create a prompt with the configuration above to ask the user (the real app user which is human)
     }
 

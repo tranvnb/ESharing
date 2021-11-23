@@ -18,27 +18,39 @@ class PurchaseViewModel(application: Application): AndroidViewModel(application)
         readAllData = repository.readAllData
     }
 
-    fun addPurchase(purchase: PurchaseEntity){
+    fun addPurchase(purchase: PurchaseEntity, username: String, password: String){
         viewModelScope.launch(Dispatchers.IO){
-            repository.addPurchase(purchase)
+            repository.addPurchase(purchase,username, password)
         }
     }
 
-    fun updatePurchase(purchase: PurchaseEntity) {
+    fun updatePurchase(purchase: PurchaseEntity, username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updatePurchase(purchase)
+            repository.updatePurchase(purchase, username, password)
         }
     }
 
-    fun deletePurchase(purchase: PurchaseEntity) {
+    fun deletePurchase(purchase: PurchaseEntity, username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deletePurchase(purchase)
+            repository.deletePurchase(purchase, username, password)
         }
     }
 
-    fun deleteAllPurchase() {
+    fun deleteAllPurchase(username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllPurchase()
+            repository.deleteAllPurchase(username, password)
+        }
+    }
+
+    fun deleteAllLocalPurchase() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllLocalPurchase()
+        }
+    }
+
+    fun insertLocalPurchase(purchases: List<PurchaseEntity>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertLocalPurchase(purchases)
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lf.esharing.database.purchase.PurchaseViewModel
+import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentDisplayExpensesBinding
 
 class DisplayExpensesFragment : Fragment(){
@@ -64,7 +65,7 @@ class DisplayExpensesFragment : Fragment(){
     private fun deleteAllPurchase() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes") { _, _ ->
-            mPurchaseViewModel.deleteAllPurchase()
+            mPurchaseViewModel.deleteAllPurchase(UserViewModel.username, UserViewModel.password)
             Toast.makeText(
                 requireContext(),
                 "Successfully removed everything",

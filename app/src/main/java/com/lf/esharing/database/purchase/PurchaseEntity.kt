@@ -14,10 +14,6 @@ import java.util.*
 @Parcelize
 class PurchaseEntity (
 
-    @Json(name = "type")
-    @ColumnInfo(name = "type")
-    var purchaseType: String = "",
-
     @ColumnInfo(name = "store")
     @Json(name = "store")
     var storename: String = "",
