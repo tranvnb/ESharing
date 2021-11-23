@@ -7,11 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.database.purchase.PurchaseViewModel
+import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentAddExpensesBinding
+import com.lf.esharing.utils.DateConverter
+import com.lf.esharing.utils.Validator.inputCheck
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.temporal.TemporalAccessor
 
 class AddExpensesFragment : Fragment() {
 
@@ -38,6 +47,20 @@ class AddExpensesFragment : Fragment() {
         binding.btnSaveExpenses.setOnClickListener {
             insertDataToDatabase()
         }
+
+        binding.btnChooseDate.setOnClickListener {
+            val datePicker =
+                MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select date")
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build()
+
+                datePicker.show(requireActivity().supportFragmentManager, "DATEPICKER")
+                datePicker.addOnPositiveButtonClickListener {
+                    val local = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC)
+                    binding.edDate.setText(DateConverter.FORMATTER.format(local))
+                }
+        }
         return binding.root
     }
 
@@ -48,9 +71,9 @@ class AddExpensesFragment : Fragment() {
         val storeLoc = binding.edStoreLocation.text.toString()
         val purTotal = binding.edTotalCost.text.toString().toDoubleOrNull()
 
-        if(inputCheck(purchaseType,purchaseDate, storeName,storeLoc, purTotal)){
-            val purchase = PurchaseEntity(purchaseType, purchaseDate, storeName, storeLoc, purTotal!!)
-            mPurchaseViewModel.addPurchase(purchase)
+        if(inputCheck(purchaseType,purchaseDate, storeName, storeLoc, purTotal)){
+            val purchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
+            mPurchaseViewModel.addPurchase(purchase, UserViewModel.username, UserViewModel.password)
 
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
 
@@ -61,15 +84,7 @@ class AddExpensesFragment : Fragment() {
         }
     }
 
-    private fun inputCheck(
-        purchaseType: String,
-        purchaseDate: String, storeName: String,
-        storeLoc: String,
-        purTotal: Double?
-    ): Boolean{
-        return !(TextUtils.isEmpty(purchaseType) && TextUtils.isEmpty(purchaseDate) && TextUtils.isEmpty(storeName)
-                && TextUtils.isEmpty(storeLoc) && purTotal == null)
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

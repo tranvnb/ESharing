@@ -14,7 +14,7 @@ import com.lf.esharing.utils.UUIDConverter
 
 @Database(
     entities = [PurchaseEntity::class, UserEntity::class],
-    version = 2,
+    version = 1,
     exportSchema = true
 )
 @TypeConverters(DateConverter::class, UUIDConverter::class)

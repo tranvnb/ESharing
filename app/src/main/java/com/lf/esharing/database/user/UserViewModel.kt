@@ -10,6 +10,10 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application): AndroidViewModel(application) {
 
+    companion object {
+        var username: String = "";
+        var password: String = ""
+    }
 
     private val userDao: UserDao = AppDatabase.getDatabase(application).userDao()
 
@@ -18,6 +22,12 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     fun login(username: String, password: String): MutableLiveData<Boolean> {
         val result: MutableLiveData<Boolean> = MutableLiveData()
         viewModelScope.launch {
+            val response = userRepository.login(username, password)
+            if (response) {
+                // store username and password for future requests
+                UserViewModel.username = username
+                UserViewModel.password = password
+            }
             result.postValue(userRepository.login(username, password))
         }
         return result

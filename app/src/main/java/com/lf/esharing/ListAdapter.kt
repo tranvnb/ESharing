@@ -28,9 +28,9 @@ class ListAdapter(): RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         val currentItem = purchaseList[position]
 
         holder.itemView.findViewById<TextView>(R.id.id_txt).text =
-            "Purchase ID: " + currentItem.id.toString() + "\n" + "Purchase Type: " + currentItem.purchaseType + "\n" +
+            "Purchase ID: " + currentItem.id.toString() + "\n" + "Purchase Type: " + currentItem.itemspurchased + "\n" +
         "Purchase Date: " + currentItem.purcdate + "\n" + "Store Name: " + currentItem.storename + "\n" +  "Store Location: " +
-                    currentItem.storelocation + "\n" +  "Items/no of items: " + currentItem.itemspurchased + "\n" +
+                    currentItem.storelocation + "\n" +
                     "Total cost: " + currentItem.totalcost
 
         holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {

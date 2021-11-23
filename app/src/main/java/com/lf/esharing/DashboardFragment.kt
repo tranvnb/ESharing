@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.lf.esharing.database.purchase.PurchaseEntity
+import com.lf.esharing.database.purchase.PurchaseViewModel
 import com.lf.esharing.database.user.UserEntity
 import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentDashboardBinding
@@ -19,6 +20,7 @@ class DashboardFragment : Fragment() {
 
     private lateinit var binding: FragmentDashboardBinding
     private val userViewModel: UserViewModel by viewModels()
+    private val purchaseViewModel: PurchaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,12 @@ class DashboardFragment : Fragment() {
         })
 
         userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
+            // synchronize with remote database
+            if (it !== null) {
+                // delete first then add later - FOLLOW ORDER
+                purchaseViewModel.deleteAllLocalPurchase()
+                purchaseViewModel.insertLocalPurchase(it)
+            }
             println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
         })
     }
