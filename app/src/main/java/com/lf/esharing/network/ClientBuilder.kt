@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ClientBuilder {
-    private val baseUrl = "http://172.24.57.121:5000/"
+    val baseUrl = "http://172.30.75.229:5000/"
 
 
 
