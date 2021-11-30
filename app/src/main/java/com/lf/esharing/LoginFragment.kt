@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
 
         var btnGoReg = binding.root.findViewById<Button>(R.id.btnGoReg)
         btnGoReg.setOnClickListener {
-            it.findNavController().navigate(R.id.registrationFragment)
+            it.findNavController().navigate(R.id.action_loginFragment_to_regFragment)
         }
 
         var btnLogin = binding.root.findViewById<Button>(R.id.btnLogin)
@@ -57,7 +57,7 @@ class LoginFragment : Fragment() {
                     .observe(viewLifecycleOwner, Observer {
                         if (it == true) {
                             startSocketConnection()
-                            findNavController().navigate(R.id.dashboardFragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
                         }else {
                             Toast.makeText(context, "Wrong username or password!", Toast.LENGTH_SHORT).show()
                         }

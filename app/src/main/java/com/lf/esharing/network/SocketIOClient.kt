@@ -34,7 +34,6 @@ object SocketIOClient {
             synchronized(this) {
                 try {
                     INSTANCE = IO.socket(ClientBuilder.baseUrl)
-                    INSTANCE?.connect()
                 } catch (e: URISyntaxException) {
                     println("Invalid url format: " + e.message)
                     return null
@@ -52,7 +51,7 @@ object SocketIOClient {
         if (INSTANCE == null)
             return false
         try {
-            INSTANCE?.on(Socket.EVENT_CONNECT, Emitter.Listener {
+            INSTANCE?.once(Socket.EVENT_CONNECT, Emitter.Listener {
                 INSTANCE?.emit(ONLINE, username)
             })
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.database.purchase.PurchaseViewModel
 import com.lf.esharing.database.user.UserEntity
@@ -45,23 +46,28 @@ class DashboardFragment : Fragment() {
 //            println(MoshiHelper.toJson(String::class.java, it))
 //        })
 //
-//        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
-//            // synchronize with remote database
-//            if (it !== null) {
-//                // delete first then add later - FOLLOW ORDER
-//                purchaseViewModel.deleteAllLocalPurchase()
-//                purchaseViewModel.insertLocalPurchase(it)
-//            }
-//            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
-//        })
+        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
+            // synchronize with remote database
+            if (it !== null) {
+                // delete first then add later - FOLLOW ORDER
+                purchaseViewModel.deleteAllLocalPurchase()
+                purchaseViewModel.insertLocalPurchase(it)
+            }
+            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var btnAddExpenses = binding.root.findViewById<Button>(R.id.btnAddExpenses)
+        val btnAddExpenses = binding.btnAddExpenses
         btnAddExpenses.setOnClickListener {
-            it.findNavController().navigate(R.id.addexpensesFragment)
+            it.findNavController().navigate(R.id.action_dashboardFragment_to_addexpenseFragment)
+        }
+
+        val btnTrackExpenses = binding.btnTrackExpenses
+        btnTrackExpenses.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_displayexpensesFragment)
         }
     }
 }

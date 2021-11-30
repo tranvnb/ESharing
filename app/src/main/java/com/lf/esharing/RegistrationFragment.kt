@@ -47,10 +47,10 @@ class RegistrationFragment : Fragment() {
             val lastname = binding.edtxtLstName.text.toString()
 
             if (Validator.registrationInputCheck(username, password, confirm, firstname, lastname)) {
-                val user = UserEntity(username, password, firstname, lastname, true)
-                userViewModel.signup(user).observe(viewLifecycleOwner, Observer {
-                    findNavController().navigate(R.id.loginFragment)
-                })
+//                val user = UserEntity(username, password, firstname, lastname, true)
+//                userViewModel.signup(user).observe(viewLifecycleOwner, Observer {
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+//                })
             } else {
                 Toast.makeText(context, "Please input valid values.", Toast.LENGTH_SHORT).show()
             }

@@ -38,7 +38,7 @@ class SplashMainFragment : Fragment() {
 
         var btnLetGo = binding.root.findViewById<Button>(R.id.btnLetGo)
         btnLetGo.setOnClickListener {
-                it.findNavController().navigate(R.id.loginFragment)
+                it.findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         }
     }
 }

@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_splash_main" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -25,7 +27,9 @@
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" >
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true">
             <argument
                 android:name="userId"
                 android:defaultValue="null" />
@@ -39,7 +43,9 @@
         tools:layout="@layout/fragment_registration" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -50,6 +56,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addexpenseFragment"
             app:destination="@id/addexpensesFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_displayexpensesFragment"
+            app:destination="@id/displayexpensesFragment" />
     </fragment>
 
     <fragment
@@ -58,8 +67,10 @@
         android:label="fragment_addexpenses"
         tools:layout="@layout/fragment_add_expenses" >
         <action
-            android:id="@+id/action_addexpensesFragment_to_displayexpenseFragment"
-            app:destination="@id/displayexpensesFragment" />
+            android:id="@+id/action_addexpensesFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -83,7 +94,9 @@
         tools:layout="@layout/fragment_update" >
         <action
             android:id="@+id/action_updateFragment_to_displayexpenseFragment"
-            app:destination="@id/displayexpensesFragment">
+            app:destination="@id/displayexpensesFragment"
+            app:popUpTo="@id/displayexpensesFragment"
+            app:popUpToInclusive="true">
         </action>
 <!--        <argument-->
 <!--            android:name="currentPurchase"-->
