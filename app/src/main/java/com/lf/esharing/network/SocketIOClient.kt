@@ -2,6 +2,8 @@ package com.lf.esharing.network
 
 import android.content.Context
 import android.widget.Toast
+import androidx.annotation.WorkerThread
+import com.lf.esharing.database.user.UserViewModel
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -10,6 +12,7 @@ import java.lang.Exception
 import java.net.URISyntaxException
 
 // TODO: should change this to builder pattern
+//@WorkerThread
 object SocketIOClient {
 
     private var INSTANCE: Socket? = null
@@ -22,6 +25,9 @@ object SocketIOClient {
     const val FROM_USER = "FROM_USER"
     const val FROM_OWNER = "FROM_OWNER"
     const val TO_OWNER = "TO_OWNER"
+    const val USER_DISCONNECT = "USER_DISCONNECT"
+    const val TO_USER = "TO_USER"
+    const val MESSAGE = "MESSAGE"
 
     fun initInstance(): Socket? {
         if (INSTANCE == null) {
@@ -46,13 +52,8 @@ object SocketIOClient {
         if (INSTANCE == null)
             return false
         try {
-            // catch CONNECTED event
             INSTANCE?.on(Socket.EVENT_CONNECT, Emitter.Listener {
-                println("socket connected with username: $username")
-                // subscribe to online list
-//                val jObject: JSONObject = JSONObject("")
-//                jObject.put(USERNAME, username)
-//                INSTANCE?.emit(ONLINE, jObject)
+                INSTANCE?.emit(ONLINE, username)
             })
 
             INSTANCE?.connect()
@@ -68,22 +69,32 @@ object SocketIOClient {
         if (INSTANCE == null)
             return false
 
-//        INSTANCE?.emit(JOIN_HOUSEHOLD_REQUEST, "{\"$FROM_USER\":\"$fromUser\", \"$TO_OWNER\":\"$toOwner\"}")
-        val jObject: JSONObject = JSONObject()
+        val jObject = JSONObject()
         jObject.put(FROM_USER, fromUser)
         jObject.put(TO_OWNER, toOwner)
         INSTANCE?.emit(JOIN_HOUSEHOLD_REQUEST, jObject)
-//        INSTANCE?.once(JOIN_HOUSEHOLD_REQUEST_RESPONSE, Emitter.Listener {
-//            val data = it[0] as String
-//            val jsonObject = JSONObject(data)
-//            val reply = jsonObject.getString(REPLY)
-//            val fromOwner = jsonObject.getString(FROM_OWNER)
-//            Toast.makeText(context, "Your request was $reply from $fromOwner", Toast.LENGTH_SHORT).show()
-//        })
+
+        INSTANCE?.once(JOIN_HOUSEHOLD_REQUEST_RESPONSE, Emitter.Listener {
+            val data = it[0] as String
+            val jsonObject = JSONObject(data)
+            val user = jsonObject.getString(TO_USER)
+            val fromOwner = jsonObject.getString(FROM_OWNER)
+            val message = jsonObject.getString(MESSAGE)
+            Toast.makeText(context, "Reply from $fromOwner to your request: $message", Toast.LENGTH_SHORT).show()
+        })
         return true
     }
 
     fun disconnect() {
+        INSTANCE?.emit(USER_DISCONNECT, UserViewModel.username)
         INSTANCE?.disconnect()
+    }
+
+    fun rejectJoinHouseholdRequest(owner: String, people: String, message: String) {
+        val jsonOb = JSONObject()
+        jsonOb.put(FROM_OWNER, owner)
+        jsonOb.put(TO_USER, people)
+        jsonOb.put(MESSAGE, message)
+        INSTANCE?.emit(JOIN_HOUSEHOLD_REQUEST_RESPONSE, )
     }
 }

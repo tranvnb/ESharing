@@ -25,4 +25,14 @@ object MoshiHelper {
         val adapter: JsonAdapter<List<T>> = moshi.adapter(type)
         return adapter.toJson(list)
     }
+
+    fun <T> toJsonObject(classEntity: Class<T>, instance: T): String {
+        val adapter: JsonAdapter<T> = moshi.adapter(classEntity)
+        return adapter.toJson(instance)
+    }
+
+    fun <T> fromJsonObject(classEntity: Class<T>, str: String): T? {
+        val adapter: JsonAdapter<T> = moshi.adapter(classEntity)
+        return adapter.fromJson(str)
+    }
 }

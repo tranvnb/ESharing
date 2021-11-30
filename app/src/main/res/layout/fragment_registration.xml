@@ -65,21 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtxtLstName" />
 
-    <EditText
-        android:id="@+id/edtxtPhno"
-        android:layout_width="320dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edit_round"
-        android:ems="10"
-        android:hint="@string/edtxtPhno"
-        android:inputType="phone"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtxtEmail" />
-
     <Button
         android:id="@+id/btnRegSub"
         android:layout_width="wrap_content"
@@ -106,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtxtPhno" />
+        app:layout_constraintTop_toBottomOf="@+id/edtxtEmail" />
 
     <EditText
         android:id="@+id/edtxtConPass"

@@ -72,8 +72,8 @@ class AddExpensesFragment : Fragment() {
         val purTotal = binding.edTotalCost.text.toString().toDoubleOrNull()
 
         if(inputCheck(purchaseType,purchaseDate, storeName, storeLoc, purTotal)){
-            val purchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
-            mPurchaseViewModel.addPurchase(purchase, UserViewModel.username, UserViewModel.password)
+//            val purchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
+//            mPurchaseViewModel.addPurchase(purchase, UserViewModel.username, UserViewModel.password)
 
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
 

@@ -38,22 +38,22 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
-            println(MoshiHelper.toJson(UserEntity::class.java, it))
-        })
-        userViewModel.getMembers("username").observe(viewLifecycleOwner, Observer {
-            println(MoshiHelper.toJson(String::class.java, it))
-        })
-
-        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
-            // synchronize with remote database
-            if (it !== null) {
-                // delete first then add later - FOLLOW ORDER
-                purchaseViewModel.deleteAllLocalPurchase()
-                purchaseViewModel.insertLocalPurchase(it)
-            }
-            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
-        })
+//        userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
+//            println(MoshiHelper.toJson(UserEntity::class.java, it))
+//        })
+//        userViewModel.getMembers("username").observe(viewLifecycleOwner, Observer {
+//            println(MoshiHelper.toJson(String::class.java, it))
+//        })
+//
+//        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
+//            // synchronize with remote database
+//            if (it !== null) {
+//                // delete first then add later - FOLLOW ORDER
+//                purchaseViewModel.deleteAllLocalPurchase()
+//                purchaseViewModel.insertLocalPurchase(it)
+//            }
+//            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
+//        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

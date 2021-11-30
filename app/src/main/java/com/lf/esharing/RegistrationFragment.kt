@@ -6,12 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.lf.esharing.database.user.UserEntity
+import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentRegistrationBinding
+import com.lf.esharing.utils.Validator
 
 class RegistrationFragment : Fragment() {
 
     private lateinit var binding: FragmentRegistrationBinding
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +40,20 @@ class RegistrationFragment : Fragment() {
 
         var btnRegSub = binding.root.findViewById<Button>(R.id.btnRegSub)
         btnRegSub.setOnClickListener {
-            it.findNavController().navigate(R.id.loginFragment)
+            val username = binding.edtxtEmail.text.toString()
+            val password = binding.edtxtRegPass.text.toString()
+            val confirm = binding.edtxtConPass.text.toString()
+            val firstname = binding.edtxtName.text.toString()
+            val lastname = binding.edtxtLstName.text.toString()
+
+            if (Validator.registrationInputCheck(username, password, confirm, firstname, lastname)) {
+                val user = UserEntity(username, password, firstname, lastname, true)
+                userViewModel.signup(user).observe(viewLifecycleOwner, Observer {
+                    findNavController().navigate(R.id.loginFragment)
+                })
+            } else {
+                Toast.makeText(context, "Please input valid values.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

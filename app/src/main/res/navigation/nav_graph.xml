@@ -71,9 +71,9 @@
             android:id="@+id/action_displayexpensesFragment_to_updateexpensesFragment"
             app:destination="@id/updateexpensesFragment">
         </action>
-        <argument
-            android:name="currentPurchase"
-            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />
+<!--        <argument-->
+<!--            android:name="currentPurchase"-->
+<!--            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />-->
     </fragment>
 
     <fragment
@@ -85,9 +85,9 @@
             android:id="@+id/action_updateFragment_to_displayexpenseFragment"
             app:destination="@id/displayexpensesFragment">
         </action>
-        <argument
-            android:name="currentPurchase"
-            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />
+<!--        <argument-->
+<!--            android:name="currentPurchase"-->
+<!--            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />-->
 
     </fragment>
 

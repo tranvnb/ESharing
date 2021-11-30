@@ -8,7 +8,7 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
 
     suspend fun getPurchaseInfoOfMember(id: UUID, username: String, password: String, member: String): PurchaseEntity? {
         // add to online first then update local
-        return purchaseApi.getPurchaseInfoOfMember(id,member, mapOf(username to "username", password to "password")).body()
+        return purchaseApi.getPurchaseInfoOfMember(id,member, mapOf("username" to username, "password" to password)).body()
     }
 
     // get locally
@@ -40,7 +40,7 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
     }
 
     suspend fun deleteAllPurchase(username: String, password: String) {
-        if (purchaseApi.deleteAll(mapOf(username to "username", password to "password")).isSuccessful)
+        if (purchaseApi.deleteAll(mapOf("username" to username, "password" to password)).isSuccessful)
         {
             purchaseDao.deleteAll()
         }

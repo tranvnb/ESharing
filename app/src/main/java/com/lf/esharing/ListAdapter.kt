@@ -34,8 +34,8 @@ class ListAdapter(): RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
                     "Total cost: " + currentItem.totalcost
 
         holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
-            val action = DisplayExpensesFragmentDirections.actionDisplayexpensesFragmentToUpdateexpensesFragment(currentItem)
-            holder.itemView.findNavController().navigate(action)
+//            val action = DisplayExpensesFragmentDirections.actionDisplayexpensesFragmentToUpdateexpensesFragment(currentItem)
+//            holder.itemView.findNavController().navigate(action)
         }
     }
 

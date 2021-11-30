@@ -36,41 +36,9 @@ class SplashMainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.button.setOnClickListener {
-            val socket = SocketIOClient.initInstance()
-            SocketIOClient.connect("username1")
-//            socket?.emit("JOIN_HOUSEHOLD_REQUEST", "basdfargasfasdfasdf")
-//                val jObject: JSONObject = JSONObject("")
-//                jObject.put(USERNAME, "username")
-//                socket?.emit(ONLINE, jObject)
-            socket?.emit("USER_ONLINE_CHANNEL", "username1")
-            SocketIOClient.requestJoinHousehold(requireContext(), "username", "username1")
-        }
-
         var btnLetGo = binding.root.findViewById<Button>(R.id.btnLetGo)
         btnLetGo.setOnClickListener {
-            if (NetworkHelper.isNetworkConnected(requireContext())) {
-//                it.findNavController().navigate(R.id.loginFragment)
-                // Testing socket functions
-                val socket = SocketIOClient.initInstance()
-                SocketIOClient.connect("username")
-//                val jObject: JSONObject = JSONObject("")
-//                jObject.put(USERNAME, "username")
-//                socket?.emit(ONLINE, jObject)
-                socket?.emit("USER_ONLINE_CHANNEL", "username")
-                socket?.on("JOIN_HOUSEHOLD_REQUEST", Emitter.Listener {
-                    val data = it[0] as String
-                    val jsonObject = JSONObject(data)
-                    val people = jsonObject.getString(SocketIOClient.FROM_USER)
-                    val owner = jsonObject.getString(SocketIOClient.TO_OWNER)
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "There is a request join your house from: " + people, Toast.LENGTH_SHORT).show()
-                    }
-                })
-
-            }else{
-                Toast.makeText(context, "No network connection.", Toast.LENGTH_LONG).show()
-            }
+                it.findNavController().navigate(R.id.loginFragment)
         }
     }
 }
