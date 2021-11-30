@@ -1,6 +1,7 @@
 package com.lf.esharing
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,7 +12,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.lf.esharing.database.user.UserViewModel
@@ -41,9 +41,8 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         var btnGoReg = binding.root.findViewById<Button>(R.id.btnGoReg)
         btnGoReg.setOnClickListener {
             it.findNavController().navigate(R.id.action_loginFragment_to_regFragment)
@@ -56,7 +55,8 @@ class LoginFragment : Fragment() {
                 userViewModel.login(binding.edtxtUser.text.toString(), binding.edtxtPass.text.toString())
                     .observe(viewLifecycleOwner, Observer {
                         if (it == true) {
-                            startSocketConnection()
+                            SocketIOClient.initInstance()
+                            SocketIOClient.connect(UserViewModel.username)
                             findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
                         }else {
                             Toast.makeText(context, "Wrong username or password!", Toast.LENGTH_SHORT).show()
@@ -70,28 +70,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun startSocketConnection() {
-        val socket = SocketIOClient.initInstance()
-        SocketIOClient.connect(UserViewModel.username)
-        socket?.on("JOIN_HOUSEHOLD_REQUEST", Emitter.Listener {
-            val data = it[0] as String
-            val jsonObject = JSONObject(data)
-            val people = jsonObject.getString(SocketIOClient.FROM_USER)
-            val owner = jsonObject.getString(SocketIOClient.TO_OWNER)
-            alertDialog = AlertDialog.Builder(requireActivity().baseContext)
-                .setTitle("Join Household Request")
-                .setMessage(people + " want to join your household")
-                .setNegativeButton("Reject", DialogInterface.OnClickListener { dialogInterface, i ->
-                    SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Sorry, I dont want.")
-                    dialogInterface.dismiss()
-                })
-                .setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, i ->
-                    SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Okay let be together")
-                    // TODO: add new member to household
-                    dialogInterface.dismiss()
-                })
 
-            alertDialog.show()
-        })
-    }
+
 }

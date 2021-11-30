@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        SocketIOClient.disconnect()
         super.onDestroy()
+        SocketIOClient.disconnect()
     }
 }
