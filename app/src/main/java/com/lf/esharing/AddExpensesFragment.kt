@@ -13,10 +13,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.database.purchase.PurchaseViewModel
+import com.lf.esharing.database.purchase.PurchasesRequest
 import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentAddExpensesBinding
 import com.lf.esharing.utils.DateConverter
+import com.lf.esharing.utils.MoshiHelper
 import com.lf.esharing.utils.Validator.inputCheck
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -73,11 +77,13 @@ class AddExpensesFragment : Fragment() {
 
         if(inputCheck(purchaseType,purchaseDate, storeName, storeLoc, purTotal)){
             val purchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
-            mPurchaseViewModel.addPurchase(purchase, UserViewModel.username, UserViewModel.password)
+            val str = MoshiHelper.toJsonObject(PurchasesRequest::class.java, PurchasesRequest(UserViewModel.username, UserViewModel.password, purchase))
+            val request = RequestBody.create(MediaType.parse("application/json"), str)
+            mPurchaseViewModel.addPurchase(request, purchase)
 
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
 
-            findNavController().navigate(R.id.action_addexpensesFragment_to_displayexpenseFragment)
+            findNavController().navigate(R.id.action_addexpensesFragment_to_dashboardFragment)
 
         }else{
             Toast.makeText(requireContext(), "Please fill out all fields!", Toast.LENGTH_LONG).show()

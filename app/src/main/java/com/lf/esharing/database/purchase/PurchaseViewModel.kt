@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.lf.esharing.database.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
 
 class PurchaseViewModel(application: Application): AndroidViewModel(application) {
     val readAllData: LiveData<List<PurchaseEntity>>
@@ -18,9 +19,9 @@ class PurchaseViewModel(application: Application): AndroidViewModel(application)
         readAllData = repository.readAllData
     }
 
-    fun addPurchase(purchase: PurchaseEntity, username: String, password: String){
+    fun addPurchase(request: RequestBody, purchase: PurchaseEntity){
         viewModelScope.launch(Dispatchers.IO){
-            repository.addPurchase(purchase,username, password)
+            repository.addPurchase(request, purchase)
         }
     }
 

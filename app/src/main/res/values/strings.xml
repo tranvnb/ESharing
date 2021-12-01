@@ -22,4 +22,5 @@
     <string name="txtExistUser">Already a user? Login</string>
     <string name="btnGoLogin">Login</string>
     <string name="btnAddExpenses">Add Your Expenses</string>
+    <string name="btnTrackExpenses">Track Your Expenses</string>
 </resources>

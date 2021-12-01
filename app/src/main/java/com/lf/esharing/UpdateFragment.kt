@@ -22,7 +22,7 @@ class UpdateFragment : Fragment() {
     private var _binding: FragmentUpdateBinding? = null
     private val binding get() = _binding!!
 
-    private val args by navArgs<UpdateFragmentArgs>()
+//    private val args by navArgs<UpdateFragmentArgs>()
 
     private lateinit var mPurchaseViewModel: PurchaseViewModel
 
@@ -40,12 +40,12 @@ class UpdateFragment : Fragment() {
 
         mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
 
-        binding.updateedPurchaseId.setText(args.currentPurchase.id.toString())
-        binding.updateedPurchaseType.setText(args.currentPurchase.itemspurchased)
-        binding.updateedDate.setText(DateConverter.FORMATTER.format(args.currentPurchase.purcdate))
-        binding.updateedStoreName.setText(args.currentPurchase.storename)
-        binding.updateedStoreLocation.setText(args.currentPurchase.storelocation)
-        binding.updateedTotalCost.setText(args.currentPurchase.totalcost.toString())
+//        binding.updateedPurchaseId.setText(args.currentPurchase.id.toString())
+//        binding.updateedPurchaseType.setText(args.currentPurchase.itemspurchased)
+//        binding.updateedDate.setText(DateConverter.FORMATTER.format(args.currentPurchase.purcdate))
+//        binding.updateedStoreName.setText(args.currentPurchase.storename)
+//        binding.updateedStoreLocation.setText(args.currentPurchase.storelocation)
+//        binding.updateedTotalCost.setText(args.currentPurchase.totalcost.toString())
 
         binding.btnUpdateExpenses.setOnClickListener {
             updateItem()
@@ -67,10 +67,10 @@ class UpdateFragment : Fragment() {
 
         if (inputCheck(purchaseType, purchaseDate, storeName, storeLoc, purTotal!!)) {
             // Create User Object
-            val updatedPurchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
+//            val updatedPurchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
 
             // Update Current User
-            mPurchaseViewModel.updatePurchase(updatedPurchase, UserViewModel.username, UserViewModel.password)
+//            mPurchaseViewModel.updatePurchase(updatedPurchase, UserViewModel.username, UserViewModel.password)
             Toast.makeText(requireContext(), "Updated Successfully !", Toast.LENGTH_SHORT).show()
 
             // Navigate back to List Fragment
@@ -95,20 +95,20 @@ class UpdateFragment : Fragment() {
 
     // Implement logic to delete a user
     private fun deletePurchase() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes") { _, _ ->     // Make a "Yes" option and set action if the user selects "Yes"
-           // mPurchaseViewModel.deletePurchase(args.currentPurchase)    // Execute : delete user
-            Toast.makeText(                                // Notification if a user is deleted successfully
-                requireContext(),
-                "Successfully removed ${args.currentPurchase.itemspurchased}",
-                Toast.LENGTH_SHORT)
-                .show()
-            findNavController().navigate(R.id.action_updateFragment_to_displayexpenseFragment) // Navigate to List Fragment after deleting a user
-        }
-        builder.setNegativeButton("No") { _, _ -> }    // Make a "No" option and set action if the user selects "No"
-        builder.setTitle("Delete ${args.currentPurchase.itemspurchased} ?")  // Set the title of the prompt with a sentence saying the first name of the user inside the app (using template string)
-        builder.setMessage("Are you sure to remove ${args.currentPurchase.itemspurchased} ?")  // Set the message of the prompt with a sentence saying the first name of the user inside the app (using template string)
-        builder.create().show()  // Create a prompt with the configuration above to ask the user (the real app user which is human)
+//        val builder = AlertDialog.Builder(requireContext())
+//        builder.setPositiveButton("Yes") { _, _ ->     // Make a "Yes" option and set action if the user selects "Yes"
+//           // mPurchaseViewModel.deletePurchase(args.currentPurchase)    // Execute : delete user
+//            Toast.makeText(                                // Notification if a user is deleted successfully
+//                requireContext(),
+//                "Successfully removed ${args.currentPurchase.itemspurchased}",
+//                Toast.LENGTH_SHORT)
+//                .show()
+//            findNavController().navigate(R.id.action_updateFragment_to_displayexpenseFragment) // Navigate to List Fragment after deleting a user
+//        }
+//        builder.setNegativeButton("No") { _, _ -> }    // Make a "No" option and set action if the user selects "No"
+//        builder.setTitle("Delete ${args.currentPurchase.itemspurchased} ?")  // Set the title of the prompt with a sentence saying the first name of the user inside the app (using template string)
+//        builder.setMessage("Are you sure to remove ${args.currentPurchase.itemspurchased} ?")  // Set the message of the prompt with a sentence saying the first name of the user inside the app (using template string)
+//        builder.create().show()  // Create a prompt with the configuration above to ask the user (the real app user which is human)
     }
 
     override fun onDestroyView() {
