@@ -122,7 +122,6 @@ dependencies {
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     //Socket.io
-    implementation 'io.socket:socket.io-client:2.0.1'
     implementation ('io.socket:socket.io-client:2.0.1') {
         exclude group: 'org.json', module: 'json'
     }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lf.esharing.database.purchase.PurchaseViewModel
 import com.lf.esharing.database.user.UserViewModel
@@ -29,16 +30,17 @@ class DisplayExpensesFragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_display_expenses, container, false)
 
         _binding = FragmentDisplayExpensesBinding.inflate(inflater, container, false)
 
         val adapter = ListAdapter()
 
         val recyclerView = binding.recyclerView
+        val divider = DividerItemDecoration (context, LinearLayoutManager(context).orientation)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(divider)
 
         mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
         mPurchaseViewModel.readAllData.observe(viewLifecycleOwner, Observer{

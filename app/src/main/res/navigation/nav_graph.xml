@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/nav_graph" />
     </fragment>
 
     <fragment
@@ -27,7 +27,7 @@
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment"
-            app:popUpToInclusive="false">
+            app:popUpTo="@id/nav_graph">
             <argument
                 android:name="userId"
                 android:defaultValue="null" />

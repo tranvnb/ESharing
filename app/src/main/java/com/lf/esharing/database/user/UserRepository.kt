@@ -26,4 +26,11 @@ class UserRepository(val userDao: UserDao, val userApi: UserApi = UserClient.get
     suspend fun signup(user: RequestBody): Boolean {
         return userApi.signup(user).isSuccessful
     }
+
+    suspend fun addMember(data: RequestBody): JSONObject? {
+        val res = userApi.addMember(data)
+        val rsMap:MutableMap<String, String>? = res.body()?.toMutableMap()
+        rsMap?.put("code", res.code().toString())
+        return JSONObject(rsMap?.toMap())
+    }
 }

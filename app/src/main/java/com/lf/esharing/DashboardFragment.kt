@@ -46,42 +46,16 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater,container,false)
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_dashboard, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
-//            println(MoshiHelper.toJson(UserEntity::class.java, it))
-//        })
-//        userViewModel.getMembers("username").observe(viewLifecycleOwner, Observer {
-//            println(MoshiHelper.toJson(String::class.java, it))
-//        })
-//
-//        userViewModel.getPurchases("username").observe(viewLifecycleOwner, Observer {
-//            // synchronize with remote database
-//            if (it !== null) {
-//                // delete first then add later - FOLLOW ORDER
-//                purchaseViewModel.deleteAllLocalPurchase()
-//                purchaseViewModel.insertLocalPurchase(it)
-//            }
-//            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
-//        })
 
+        updateMembers()
 
-        alertDialog = AlertDialog.Builder(requireContext()).setTitle("Join Household Request")
-//            .setMessage(people + " want to join your household")
-//            .setNegativeButton("Reject", DialogInterface.OnClickListener { dialogInterface, i ->
-//                SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Sorry, I dont want.")
-//                dialogInterface.dismiss()
-//            })
-//            .setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, i ->
-//                SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Okay let be together")
-//                // TODO: add new member to household
-//                dialogInterface.dismiss()
-//            })
+        updateLatestPurchases()
+
         this.myContext = requireActivity().applicationContext
         alertDialog = AlertDialog.Builder(this.myContext)
         startSocketConnection(this.myContext)
@@ -125,8 +99,6 @@ class DashboardFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
     }
 
     private fun requestJoinHousehold(ownerName: String) {
@@ -148,21 +120,6 @@ class DashboardFragment : Fragment() {
                         message,
                         Toast.LENGTH_SHORT
                     ).show()
-
-//                                    alertDialog = AlertDialog.Builder(requireContext())
-//                                        .setTitle("Join Household Request")
-//                                    alertDialog.setMessage("people" + " want to join your household")
-//                                        .setNegativeButton("Reject", DialogInterface.OnClickListener { dialogInterface, i ->
-////                                            SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Sorry, I dont want.")
-//                                            dialogInterface.dismiss()
-//                                        })
-//                                        .setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, i ->
-////                                            SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Okay let be together")
-//                                            // TODO: add new member to household
-//                                            dialogInterface.dismiss()
-//                                        })
-//
-//                                    alertDialog.show()
                 }
             })
     }
@@ -180,9 +137,36 @@ class DashboardFragment : Fragment() {
                 })
                 .setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, i ->
                     SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Okay let be together")
-                    // TODO: add new member to household
+                    userViewModel.addMember(people).observe(viewLifecycleOwner, Observer {
+                        if (it != null && it.has("code") && it.getInt("code") == 200) {
+                            UserViewModel.currentMembers.add(people)
+                        }
+                        Toast.makeText(context, it?.getString("message"), Toast.LENGTH_SHORT).show()
+                    })
                     dialogInterface.dismiss()
                 }).show()
+        })
+    }
+
+    private fun updateLatestPurchases() {
+        userViewModel.getPurchases(UserViewModel.username).observe(viewLifecycleOwner, Observer {
+            // synchronize with remote database
+            // delete first then add later - FOLLOW ORDER
+            purchaseViewModel.deleteAllLocalPurchase()
+            if (it !== null) {
+                purchaseViewModel.insertLocalPurchase(it)
+            }
+            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
+        })
+    }
+
+    private fun updateMembers() {
+        userViewModel.getMembers(UserViewModel.username).observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                UserViewModel.currentMembers.clear()
+                UserViewModel.currentMembers.addAll(it)
+            }
+            println(MoshiHelper.toJson(String::class.java, it))
         })
     }
 }

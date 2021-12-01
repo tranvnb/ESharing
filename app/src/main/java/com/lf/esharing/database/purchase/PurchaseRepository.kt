@@ -1,6 +1,7 @@
 package com.lf.esharing.database.purchase
 
 import androidx.lifecycle.LiveData
+import okhttp3.RequestBody
 import java.util.*
 
 class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purchaseApi: PurchaseApi = PurchaseClient.getInstance()) {
@@ -8,7 +9,7 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
 
     suspend fun getPurchaseInfoOfMember(id: UUID, username: String, password: String, member: String): PurchaseEntity? {
         // add to online first then update local
-        return purchaseApi.getPurchaseInfoOfMember(id,member, mapOf("username" to username, "password" to password)).body()
+        return purchaseApi.getPurchaseInfoOfMember(id, member, mapOf("username" to username, "password" to password)).body()
     }
 
     // get locally
@@ -17,9 +18,9 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
         return purchaseDao.findById(id)
     }
 
-    suspend fun addPurchase(purchase: PurchaseEntity, username: String, password: String){
+    suspend fun addPurchase(requestBody: RequestBody, purchase: PurchaseEntity){
         // add to online first then update local
-        if (purchaseApi.insertPurchase(PurchasesRequest(username, password, purchase)).isSuccessful)
+        if (purchaseApi.insertPurchase(requestBody).isSuccessful)
         {
             purchaseDao.insert(purchase)
         }

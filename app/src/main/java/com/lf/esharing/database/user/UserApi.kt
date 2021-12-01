@@ -38,4 +38,11 @@ interface UserApi {
     @POST("signup")
     suspend fun signup(@Body user: RequestBody): Response<Map<String, String>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("add-member")
+    suspend fun addMember(@Body data: RequestBody): Response<Map<String, String>>
+
 }

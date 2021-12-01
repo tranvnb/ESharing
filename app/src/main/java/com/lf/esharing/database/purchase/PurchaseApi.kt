@@ -1,5 +1,6 @@
 package com.lf.esharing.database.purchase
 
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.*
@@ -33,7 +34,7 @@ interface PurchaseApi {
         "Content-Type: application/json"
     )
     @POST("add")
-    suspend fun insertPurchase(@Body request: PurchasesRequest): Response<Map<String, String>>
+    suspend fun insertPurchase(@Body request: RequestBody): Response<Map<String, String>>
 
     @Headers(
         "Accept: application/json",
