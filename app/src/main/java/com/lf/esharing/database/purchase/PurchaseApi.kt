@@ -19,7 +19,7 @@ interface PurchaseApi {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @DELETE("{id}")
+    @HTTP(method = "DELETE", path = "{id}", hasBody = true)
     suspend fun deletePurchase(@Path("id") id: UUID, @Body request: PurchasesRequest): Response<Map<String, String>>
 
     @Headers(
@@ -40,7 +40,14 @@ interface PurchaseApi {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @DELETE("all")
+    @HTTP(method = "DELETE", path = "all", hasBody = true)
     suspend fun deleteAll(@Body request: Map<String, String>): Response<Map<String, String>>
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @HTTP(method = "DELETE", path = "many", hasBody = true)
+    suspend fun deleteMany(@Body request: RequestBody): Response<Map<String, String>>
 
 }

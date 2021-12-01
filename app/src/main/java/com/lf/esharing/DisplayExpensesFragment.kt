@@ -19,6 +19,7 @@ class DisplayExpensesFragment : Fragment(){
     private val binding get() = _binding!!
 
     private lateinit var mPurchaseViewModel: PurchaseViewModel
+    lateinit var adapter: ListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,11 @@ class DisplayExpensesFragment : Fragment(){
 
         _binding = FragmentDisplayExpensesBinding.inflate(inflater, container, false)
 
-        val adapter = ListAdapter()
+        adapter = ListAdapter(object: ListAdapter.ListViewItemClickListener {
+            override fun onClick() {
+                requireActivity().invalidateOptionsMenu()
+            }
+        })
 
         val recyclerView = binding.recyclerView
         val divider = DividerItemDecoration (context, LinearLayoutManager(context).orientation)
@@ -43,22 +48,37 @@ class DisplayExpensesFragment : Fragment(){
         recyclerView.addItemDecoration(divider)
 
         mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
-        mPurchaseViewModel.readAllData.observe(viewLifecycleOwner, Observer{
-            purchase -> adapter.setData(purchase)
-        })
+
 
         setHasOptionsMenu(true)
 
         return  binding!!.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mPurchaseViewModel.getAllLocalData().observe(viewLifecycleOwner, Observer{
+                purchase -> adapter.setData(purchase)
+        })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.delete_menu, menu)
+        val menuId =
+            if (this::adapter.isInitialized &&
+                adapter.selectedItemCount() > 0
+            ) {
+                R.menu.delete_menu
+            } else {
+                R.menu.menu_main
+            }
+        inflater.inflate(menuId, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_delete) {
-            deleteAllPurchase()
+            mPurchaseViewModel.deletePurchases(adapter.getSelectedList())
         }
         return super.onOptionsItemSelected(item)
     }

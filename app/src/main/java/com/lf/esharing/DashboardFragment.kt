@@ -153,7 +153,7 @@ class DashboardFragment : Fragment() {
             // synchronize with remote database
             // delete first then add later - FOLLOW ORDER
             purchaseViewModel.deleteAllLocalPurchase()
-            if (it !== null) {
+            if (it != null) {
                 purchaseViewModel.insertLocalPurchase(it)
             }
             println(MoshiHelper.toJson(PurchaseEntity::class.java, it))

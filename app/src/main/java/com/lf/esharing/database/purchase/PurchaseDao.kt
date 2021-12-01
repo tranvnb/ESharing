@@ -8,20 +8,23 @@ import java.util.*
 interface PurchaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(purchase: PurchaseEntity)
+    suspend fun insert(purchase: PurchaseEntity)
 
     /// TODO: be careful with this, might cause losing data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(purchases: List<PurchaseEntity>)
+    suspend fun insertAll(purchases: List<PurchaseEntity>)
 
     @Delete
-    fun delete(purchase: PurchaseEntity)
+    suspend fun delete(purchase: PurchaseEntity)
+
+    @Delete
+    suspend fun deletePurchases(vararg users: PurchaseEntity)
 
     @Query("DELETE FROM purchases")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Update
-    fun update(purchase: PurchaseEntity)
+    suspend fun update(purchase: PurchaseEntity)
 
     @Query("SELECT * from purchases WHERE id = :id")
     fun findById(id: UUID): LiveData<PurchaseEntity>
