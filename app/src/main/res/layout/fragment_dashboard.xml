@@ -44,5 +44,17 @@
         android:text="Request join household"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/btnTrackExpenses" />
+
+    <Button
+        android:id="@+id/btnManageMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Manage your members"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTrackExpenses" />
 </androidx.constraintlayout.widget.ConstraintLayout>

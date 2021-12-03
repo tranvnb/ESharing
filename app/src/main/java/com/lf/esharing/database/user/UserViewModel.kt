@@ -18,7 +18,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     companion object {
         var username: String = "";
         var password: String = ""
-        val currentMembers: MutableList<String> = mutableListOf()
+        val currentMembers: MutableLiveData<List<String>> = MutableLiveData()
     }
 
     private val userDao: UserDao = AppDatabase.getDatabase(application).userDao()

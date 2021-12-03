@@ -3,10 +3,13 @@ package com.lf.esharing
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
@@ -139,7 +142,10 @@ class DashboardFragment : Fragment() {
                     SocketIOClient.rejectJoinHouseholdRequest(owner, people, "Okay let be together")
                     userViewModel.addMember(people).observe(viewLifecycleOwner, Observer {
                         if (it != null && it.has("code") && it.getInt("code") == 200) {
-                            UserViewModel.currentMembers.add(people)
+                            // Update members
+                            val newMembers = UserViewModel.currentMembers.value?.toMutableList()
+                            newMembers?.add(people)
+                            UserViewModel.currentMembers.postValue(newMembers)
                         }
                         Toast.makeText(context, it?.getString("message"), Toast.LENGTH_SHORT).show()
                     })
@@ -163,10 +169,15 @@ class DashboardFragment : Fragment() {
     private fun updateMembers() {
         userViewModel.getMembers(UserViewModel.username).observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                UserViewModel.currentMembers.clear()
-                UserViewModel.currentMembers.addAll(it)
+                UserViewModel.currentMembers.postValue(emptyList())
+                UserViewModel.currentMembers.postValue(it)
+                binding.btnRequestJoinHouse.visibility = GONE
+                binding.btnManageMembers.visibility = VISIBLE
+            } else {
+                UserViewModel.currentMembers.postValue(emptyList())
+                binding.btnRequestJoinHouse.visibility = VISIBLE
+                binding.btnManageMembers.visibility = GONE
             }
-            println(MoshiHelper.toJson(String::class.java, it))
         })
     }
 }
