@@ -31,6 +31,8 @@ object SocketIOClient {
     const val TO_USER = "TO_USER"
     const val MESSAGE = "MESSAGE"
     const val JOIN_HOUSEHOLD_REQUEST_RESPONSE_NOT_EXIST = "JOIN_HOUSEHOLD_REQUEST_RESPONSE_NOT_EXIST"
+    const val BEING_REMOVED_FROM_HOUSEHOLD = "BEING_REMOVED_FROM_HOUSEHOLD"
+    const val REMOVED_MEMBER_FROM_HOUSEHOLD = "REMOVED_MEMBER_FROM_HOUSEHOLD"
 
     fun initInstance(): Socket? {
         if (INSTANCE == null) {
@@ -78,13 +80,7 @@ object SocketIOClient {
 
         INSTANCE?.on(JOIN_HOUSEHOLD_REQUEST_RESPONSE, Emitter.Listener {
             val jsonObject = it[0] as JSONObject
-//            val jsonObject = JSONObject(data)
             result.postValue(jsonObject)
-//            val user = jsonObject.getString(TO_USER)
-//            val fromOwner = jsonObject.getString(FROM_OWNER)
-//            val message = jsonObject.getString(MESSAGE)
-//            Toast.makeText(context, "Reply from $fromOwner to your request: $message", Toast.LENGTH_SHORT).show()
-
         })
         return result
     }
@@ -94,7 +90,7 @@ object SocketIOClient {
         INSTANCE?.disconnect()
     }
 
-    fun rejectJoinHouseholdRequest(owner: String, people: String, message: String) {
+    fun responseJoinHouseholdRequest(owner: String, people: String, message: String) {
         val jsonOb = JSONObject()
         jsonOb.put(FROM_OWNER, owner)
         jsonOb.put(TO_USER, people)
@@ -102,12 +98,29 @@ object SocketIOClient {
         INSTANCE?.emit(JOIN_HOUSEHOLD_REQUEST_RESPONSE, jsonOb)
     }
 
-    fun registerOnJoinHouseholdRequest(context: Context): LiveData<JSONObject> {
+    fun registerOnJoinHouseholdRequest(): LiveData<JSONObject> {
         val result = MutableLiveData<JSONObject>()
         INSTANCE?.on(JOIN_HOUSEHOLD_REQUEST, Emitter.Listener {
             val jsonObject = it[0] as JSONObject
             result.postValue(jsonObject)
         })
         return result
+    }
+
+    fun registerOnBeingRemovedFromHouseHold():LiveData<JSONObject> {
+        val result = MutableLiveData<JSONObject>()
+        INSTANCE?.on(BEING_REMOVED_FROM_HOUSEHOLD, Emitter.Listener {
+            val jsonObject = it[0] as JSONObject
+            result.postValue(jsonObject)
+        })
+        return result
+    }
+
+    fun notifyRemovedMember(owner: String, user: String, message: String) {
+        val jsonOb = JSONObject()
+        jsonOb.put(FROM_OWNER, owner)
+        jsonOb.put(TO_USER, user)
+        jsonOb.put(MESSAGE, message)
+        INSTANCE?.emit(REMOVED_MEMBER_FROM_HOUSEHOLD, jsonOb)
     }
 }

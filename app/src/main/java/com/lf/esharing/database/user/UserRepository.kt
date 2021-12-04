@@ -29,8 +29,29 @@ class UserRepository(val userDao: UserDao, val userApi: UserApi = UserClient.get
 
     suspend fun addMember(data: RequestBody): JSONObject? {
         val res = userApi.addMember(data)
-        val rsMap:MutableMap<String, String>? = res.body()?.toMutableMap()
-        rsMap?.put("code", res.code().toString())
-        return JSONObject(rsMap?.toMap())
+        val rsMap:MutableMap<String, String>?
+        if (res.code() == 200) {
+            rsMap = res.body()?.toMutableMap()
+            rsMap?.put("code", res.code().toString())
+            return JSONObject(rsMap?.toMap())
+        } else {
+            return JSONObject(res.errorBody()?.string())
+        }
+
+//        val rsMap:MutableMap<String, String>? = res.body()?.toMutableMap()
+//        rsMap?.put("code", res.code().toString())
+//        return JSONObject(rsMap?.toMap())
+    }
+
+    suspend fun removeMember(data: RequestBody): JSONObject? {
+        val res = userApi.removeMember(data)
+        val rsMap:MutableMap<String, String>?
+        if (res.code() == 200) {
+            rsMap = res.body()?.toMutableMap()
+            rsMap?.put("code", res.code().toString())
+            return JSONObject(rsMap?.toMap())
+        } else {
+            return JSONObject(res.errorBody()?.string())
+        }
     }
 }

@@ -45,4 +45,11 @@ interface UserApi {
     @POST("add-member")
     suspend fun addMember(@Body data: RequestBody): Response<Map<String, String>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("remove-member")
+    suspend fun removeMember(@Body data: RequestBody): Response<Map<String, String>>
+
 }
