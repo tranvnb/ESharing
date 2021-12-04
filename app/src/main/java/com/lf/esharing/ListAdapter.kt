@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.databinding.ListItemBinding
 import java.time.format.DateTimeFormatter
 
-class ListAdapter(private val mListenter: ListViewItemClickListener): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() {
+class ListAdapter(purchase: List<PurchaseEntity>, private val mListenter: ListViewItemClickListener): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() {
 
-    private var purchaseList = emptyList<PurchaseEntity>()
+    private var purchaseList = purchase
     private var selectedList = mutableListOf<PurchaseEntity>()
 
     class PurchaseItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -55,18 +56,13 @@ class ListAdapter(private val mListenter: ListViewItemClickListener): RecyclerVi
                 mListenter.onClick()
             }
 
+            root.setOnClickListener {
+                val action = DisplayExpensesFragmentDirections.actionDisplayexpensesFragmentToUpdateexpensesFragment(currentItem)
+                holder.itemView.findNavController().navigate(action)
+            }
 
         }
-//        holder.itemView.findViewById<TextView>(R.id.id_txt).text =
-//            "Purchase ID: " + currentItem.id.toString() + "\n" + "Purchase Type: " + currentItem.itemspurchased + "\n" +
-//        "Purchase Date: " + currentItem.purcdate + "\n" + "Store Name: " + currentItem.storename + "\n" +  "Store Location: " +
-//                    currentItem.storelocation + "\n" +
-//                    "Total cost: " + currentItem.totalcost
 
-//        holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
-////            val action = DisplayExpensesFragmentDirections.actionDisplayexpensesFragmentToUpdateexpensesFragment(currentItem)
-////            holder.itemView.findNavController().navigate(action)
-//        }
     }
 
     override fun getItemCount(): Int {

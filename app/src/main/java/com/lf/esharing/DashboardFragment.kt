@@ -53,6 +53,10 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateMembers()
+
+        updateLatestPurchases()
+
         val removeMemberDialog = AlertDialog.Builder(requireContext())
             .setTitle("Remove a member")
             .setView(layoutInflater.inflate(R.layout.dialog_remove_member,  null))
@@ -74,10 +78,6 @@ class DashboardFragment : Fragment() {
                 })
                 dialogInterface.dismiss()
             })
-
-        updateMembers()
-
-        updateLatestPurchases()
 
         this.myContext = requireActivity().applicationContext
         alertDialog = AlertDialog.Builder(this.myContext)
@@ -199,13 +199,10 @@ class DashboardFragment : Fragment() {
 
     private fun updateLatestPurchases() {
         userViewModel.getPurchases(UserViewModel.username).observe(viewLifecycleOwner, Observer {
-            // synchronize with remote database
-            // delete first then add later - FOLLOW ORDER
             purchaseViewModel.deleteAllLocalPurchase()
             if (it != null) {
                 purchaseViewModel.insertLocalPurchase(it)
             }
-            println(MoshiHelper.toJson(PurchaseEntity::class.java, it))
         })
     }
 

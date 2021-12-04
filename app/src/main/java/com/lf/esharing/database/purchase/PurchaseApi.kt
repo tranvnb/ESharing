@@ -27,7 +27,7 @@ interface PurchaseApi {
         "Content-Type: application/json"
     )
     @PUT("{id}")
-    suspend fun updatePurchase(@Path("id") id: UUID, @Body request: PurchasesRequest): Response<Map<String, String>>
+    suspend fun updatePurchase(@Path("id") id: UUID, @Body request: RequestBody): Response<Map<String, String>>
 
     @Headers(
         "Accept: application/json",
