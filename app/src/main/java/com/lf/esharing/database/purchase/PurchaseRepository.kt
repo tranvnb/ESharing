@@ -5,7 +5,6 @@ import okhttp3.RequestBody
 import java.util.*
 
 class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purchaseApi: PurchaseApi = PurchaseClient.getInstance()) {
-    val readAllData: LiveData<List<PurchaseEntity>> = purchaseDao.readAll()
 
     suspend fun getPurchaseInfoOfMember(id: UUID, username: String, password: String, member: String): PurchaseEntity? {
         // add to online first then update local
@@ -51,7 +50,17 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
         purchaseDao.deleteAll()
     }
 
-    fun insertLocalPurchase(purchases: List<PurchaseEntity>) {
+    suspend fun insertLocalPurchase(purchases: List<PurchaseEntity>) {
         purchaseDao.insertAll(purchases)
+    }
+
+    suspend fun deletePurchases(request: RequestBody, purchases: List<PurchaseEntity>) {
+        if (purchaseApi.deleteMany(request).isSuccessful) {
+            purchaseDao.deletePurchases(*purchases.toTypedArray())
+        }
+    }
+
+    fun getAllLocalData(): LiveData<List<PurchaseEntity>> {
+        return purchaseDao.readAll()
     }
 }

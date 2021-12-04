@@ -11,7 +11,7 @@ import com.lf.esharing.database.purchase.PurchaseEntity
 import com.lf.esharing.databinding.ListItemBinding
 import java.time.format.DateTimeFormatter
 
-class ListAdapter(): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() {
+class ListAdapter(private val mListenter: ListViewItemClickListener): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() {
 
     private var purchaseList = emptyList<PurchaseEntity>()
     private var selectedList = mutableListOf<PurchaseEntity>()
@@ -51,6 +51,8 @@ class ListAdapter(): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() 
                     imgCheck.setImageResource(R.drawable.ic_selected)
                     selectedList.add(currentItem)
                 }
+
+                mListenter.onClick()
             }
 
 
@@ -75,6 +77,18 @@ class ListAdapter(): RecyclerView.Adapter<ListAdapter.PurchaseItemViewHolder>() 
     fun setData(purchase: List<PurchaseEntity>) {
         this.purchaseList = purchase
         notifyDataSetChanged()
+    }
+
+    fun selectedItemCount(): Int {
+        return selectedList.count()
+    }
+
+    fun getSelectedList(): List<PurchaseEntity> {
+        return selectedList
+    }
+
+    interface ListViewItemClickListener{
+        fun onClick()
     }
 
 }

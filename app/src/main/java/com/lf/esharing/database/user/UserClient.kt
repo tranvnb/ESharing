@@ -5,7 +5,14 @@ import com.lf.esharing.network.ClientBuilder
 object UserClient {
     private const val url:String = "user/"
 
+    private var INSTANCE: UserApi? = null
+
     fun getInstance(): UserApi {
-        return ClientBuilder.createClient(UserApi::class.java, url)
+        if (INSTANCE == null) {
+            synchronized(this){
+                INSTANCE = ClientBuilder.createClient(UserApi::class.java, url)
+            }
+        }
+        return INSTANCE!!
     }
 }

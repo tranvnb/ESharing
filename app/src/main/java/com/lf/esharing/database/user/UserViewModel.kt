@@ -18,7 +18,8 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     companion object {
         var username: String = "";
         var password: String = ""
-        val currentMembers: MutableList<String> = mutableListOf()
+        var isOwner: Boolean = true
+        val currentMembers: MutableLiveData<List<String>> = MutableLiveData()
     }
 
     private val userDao: UserDao = AppDatabase.getDatabase(application).userDao()
@@ -85,6 +86,17 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
             val str = "{\"username\":\"${UserViewModel.username}\", \"password\":\"${UserViewModel.password}\", \"member\":\"$member\"}"
             val request = RequestBody.create(MediaType.parse("application/json"), str)
             val response = userRepository.addMember(request)
+            result.postValue(response)
+        }
+        return result
+    }
+
+    fun removeMember(member: String): LiveData<JSONObject?> {
+        val result = MutableLiveData<JSONObject?>()
+        viewModelScope.launch {
+            val str = "{\"username\":\"${UserViewModel.username}\", \"password\":\"${UserViewModel.password}\", \"member\":\"$member\"}"
+            val request = RequestBody.create(MediaType.parse("application/json"), str)
+            val response = userRepository.removeMember(request)
             result.postValue(response)
         }
         return result
