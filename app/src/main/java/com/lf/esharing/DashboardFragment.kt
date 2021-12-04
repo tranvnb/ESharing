@@ -24,6 +24,7 @@ import com.lf.esharing.database.purchase.PurchaseViewModel
 import com.lf.esharing.database.user.UserViewModel
 import com.lf.esharing.databinding.FragmentDashboardBinding
 import com.lf.esharing.network.SocketIOClient
+import com.lf.esharing.network.SocketIOClient.APPROVED
 import com.lf.esharing.network.SocketIOClient.FROM_OWNER
 import com.lf.esharing.network.SocketIOClient.MESSAGE
 import com.lf.esharing.network.SocketIOClient.TO_USER
@@ -55,7 +56,6 @@ class DashboardFragment : Fragment() {
         val removeMemberDialog = AlertDialog.Builder(requireContext())
             .setTitle("Remove a member")
             .setView(layoutInflater.inflate(R.layout.dialog_remove_member,  null))
-            .setMessage("Input member name you want to remove")
             .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.dismiss()
             })
@@ -144,22 +144,18 @@ class DashboardFragment : Fragment() {
     private fun requestJoinHousehold(ownerName: String) {
         SocketIOClient.requestJoinHousehold(requireContext(), ownerName, UserViewModel.username)
             .observe(viewLifecycleOwner, Observer {
-                if (it.has(TO_USER)) {
-                    val user = it.getString(TO_USER)
-                    val fromOwner = it.getString(FROM_OWNER)
-                    val message = it.getString(MESSAGE)
-                    Toast.makeText(
-                        context,
-                        "Reply from $fromOwner to your request: $message",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }else{
-                    val message = it.getString(MESSAGE)
-                    Toast.makeText(
-                        context,
-                        message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                val message = it.getString(MESSAGE)
+                Toast.makeText(
+                    context,
+                    message,
+                    Toast.LENGTH_SHORT
+                ).show()
+                if (it.has(APPROVED) && it.getBoolean(APPROVED)) {
+                    UserViewModel.currentMembers.postValue(emptyList())
+                    UserViewModel.currentMembers.postValue(listOf(it.getString(FROM_OWNER)))
+                    binding.btnRequestJoinHouse.visibility = GONE
+                    binding.btnShowMembers.visibility = VISIBLE
+                    binding.btnRemoveMembers.visibility = VISIBLE
                 }
             })
     }
@@ -172,17 +168,20 @@ class DashboardFragment : Fragment() {
                 .setTitle("Join Household Request")
                 .setMessage(people + " want to join your household")
                 .setNegativeButton("Reject", DialogInterface.OnClickListener { dialogInterface, i ->
-                    SocketIOClient.responseJoinHouseholdRequest(owner, people, "Sorry, I dont want.")
+                    SocketIOClient.responseJoinHouseholdRequest(owner, people, "Sorry, I dont want.", false)
                     dialogInterface.dismiss()
                 })
                 .setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, i ->
-                    SocketIOClient.responseJoinHouseholdRequest(owner, people, "Okay let be together")
+                    SocketIOClient.responseJoinHouseholdRequest(owner, people, "Okay let be together", true)
                     userViewModel.addMember(people).observe(viewLifecycleOwner, Observer {
                         if (it != null && it.has("code") && it.getInt("code") == 200) {
                             // Update members
                             val newMembers = UserViewModel.currentMembers.value?.toMutableList()
                             newMembers?.add(people)
                             UserViewModel.currentMembers.postValue(newMembers)
+                            binding.btnRequestJoinHouse.visibility = GONE
+                            binding.btnShowMembers.visibility = VISIBLE
+                            binding.btnRemoveMembers.visibility = VISIBLE
                         }
                         Toast.makeText(context, it?.getString("message"), Toast.LENGTH_SHORT).show()
                     })

@@ -33,6 +33,7 @@ object SocketIOClient {
     const val JOIN_HOUSEHOLD_REQUEST_RESPONSE_NOT_EXIST = "JOIN_HOUSEHOLD_REQUEST_RESPONSE_NOT_EXIST"
     const val BEING_REMOVED_FROM_HOUSEHOLD = "BEING_REMOVED_FROM_HOUSEHOLD"
     const val REMOVED_MEMBER_FROM_HOUSEHOLD = "REMOVED_MEMBER_FROM_HOUSEHOLD"
+    const val APPROVED = "APPROVED"
 
     fun initInstance(): Socket? {
         if (INSTANCE == null) {
@@ -90,11 +91,12 @@ object SocketIOClient {
         INSTANCE?.disconnect()
     }
 
-    fun responseJoinHouseholdRequest(owner: String, people: String, message: String) {
+    fun responseJoinHouseholdRequest(owner: String, people: String, message: String, approved: Boolean) {
         val jsonOb = JSONObject()
         jsonOb.put(FROM_OWNER, owner)
         jsonOb.put(TO_USER, people)
         jsonOb.put(MESSAGE, message)
+        jsonOb.put(APPROVED, approved)
         INSTANCE?.emit(JOIN_HOUSEHOLD_REQUEST_RESPONSE, jsonOb)
     }
 
