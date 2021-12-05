@@ -27,10 +27,13 @@ class PurchaseViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun updatePurchase(purchase: PurchaseEntity, username: String, password: String) {
+    fun updatePurchase(request: RequestBody, purchase: PurchaseEntity): MutableLiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updatePurchase(purchase, username, password)
+            result.postValue(repository.updatePurchase(request, purchase))
         }
+        return result
     }
 
     fun deletePurchase(purchase: PurchaseEntity, username: String, password: String) {

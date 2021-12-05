@@ -34,31 +34,35 @@ class DisplayExpensesFragment : Fragment(){
 
         _binding = FragmentDisplayExpensesBinding.inflate(inflater, container, false)
 
-        adapter = ListAdapter(object: ListAdapter.ListViewItemClickListener {
-            override fun onClick() {
-                requireActivity().invalidateOptionsMenu()
-            }
-        })
 
-        val recyclerView = binding.recyclerView
-        val divider = DividerItemDecoration (context, LinearLayoutManager(context).orientation)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(divider)
-
-        mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
-
-
-        setHasOptionsMenu(true)
 
         return  binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+        mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
+
+
+        setHasOptionsMenu(true)
+
         mPurchaseViewModel.getAllLocalData().observe(viewLifecycleOwner, Observer{
-                purchase -> adapter.setData(purchase)
+                purchases ->
+            adapter = ListAdapter(purchases, object: ListAdapter.ListViewItemClickListener {
+            override fun onClick() {
+                requireActivity().invalidateOptionsMenu()
+            }
+        })
+
+            val recyclerView = binding.recyclerView
+            val divider = DividerItemDecoration (context, LinearLayoutManager(context).orientation)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.setHasFixedSize(true)
+            recyclerView.addItemDecoration(divider)
         })
     }
 

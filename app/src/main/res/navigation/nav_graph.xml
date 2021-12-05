@@ -13,7 +13,9 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/nav_graph" />
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -27,7 +29,9 @@
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment"
-            app:popUpTo="@id/nav_graph">
+            app:launchSingleTop="true"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true">
             <argument
                 android:name="userId"
                 android:defaultValue="null" />
@@ -42,8 +46,8 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/registrationFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -60,6 +64,7 @@
         <action
             android:id="@+id/action_dashboardFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -83,11 +88,8 @@
         tools:layout="@layout/fragment_display_expenses" >
         <action
             android:id="@+id/action_displayexpensesFragment_to_updateexpensesFragment"
-            app:destination="@id/updateexpensesFragment">
-        </action>
-<!--        <argument-->
-<!--            android:name="currentPurchase"-->
-<!--            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />-->
+            app:destination="@id/updateexpensesFragment"></action>
+
     </fragment>
 
     <fragment
@@ -101,9 +103,9 @@
             app:popUpTo="@id/displayexpensesFragment"
             app:popUpToInclusive="true">
         </action>
-<!--        <argument-->
-<!--            android:name="currentPurchase"-->
-<!--            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />-->
+        <argument
+            android:name="selectedItem"
+            app:argType="com.lf.esharing.database.purchase.PurchaseEntity" />
 
     </fragment>
 

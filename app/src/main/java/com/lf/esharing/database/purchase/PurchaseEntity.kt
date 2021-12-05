@@ -1,20 +1,23 @@
 package com.lf.esharing.database.purchase
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity(tableName = "Purchases")
+@Parcelize
 data class PurchaseEntity(
     @PrimaryKey()
     @Json(name = "id")
     @ColumnInfo(name = "id")
     var id: UUID = UUID.randomUUID()
-) {
+) : Parcelable {
 
     @ColumnInfo(name = "store")
     @Json(name = "store")

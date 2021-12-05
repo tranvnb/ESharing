@@ -25,11 +25,13 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
         }
     }
 
-    suspend fun updatePurchase(purchase: PurchaseEntity, username: String, password: String) {
-        if (purchaseApi.updatePurchase(purchase.id, PurchasesRequest(username, password, purchase)).isSuccessful)
+    suspend fun updatePurchase(requestBody: RequestBody, purchase: PurchaseEntity): Boolean {
+        if (purchaseApi.updatePurchase(purchase.id, requestBody).isSuccessful)
         {
             purchaseDao.update(purchase)
+            return true
         }
+        return false
     }
 
     suspend fun deletePurchase(purchase: PurchaseEntity, username: String, password: String) {

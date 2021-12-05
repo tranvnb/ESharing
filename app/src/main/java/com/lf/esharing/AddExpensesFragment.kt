@@ -1,13 +1,11 @@
 package com.lf.esharing
 
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -24,7 +22,6 @@ import okhttp3.RequestBody
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.temporal.TemporalAccessor
 
 class AddExpensesFragment : Fragment() {
 
@@ -49,7 +46,7 @@ class AddExpensesFragment : Fragment() {
         mPurchaseViewModel = ViewModelProvider(this).get(PurchaseViewModel::class.java)
 
         binding.btnSaveExpenses.setOnClickListener {
-            insertDataToDatabase()
+            insertNewPurchase()
         }
 
         binding.btnChooseDate.setOnClickListener {
@@ -68,7 +65,7 @@ class AddExpensesFragment : Fragment() {
         return binding.root
     }
 
-    private fun insertDataToDatabase(){
+    private fun insertNewPurchase(){
         val purchaseType = binding.edPurchaseType.text.toString()
         val purchaseDate = binding.edDate.text.toString()
         val storeName = binding.edStoreName.text.toString()
