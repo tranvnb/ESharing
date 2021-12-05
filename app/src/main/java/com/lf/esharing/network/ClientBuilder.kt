@@ -6,8 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ClientBuilder {
-//    val baseUrl = "http://54.147.103.31:5000" // no ending forward slash
-    val baseUrl = "http://172.21.246.90:5000"
+    val baseUrl = "http://44.193.26.200:5000" // no ending forward slash
 
 
     fun <T> createClient(clientClass: Class<T>, url: String) : T {

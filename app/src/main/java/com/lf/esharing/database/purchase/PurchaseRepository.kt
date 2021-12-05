@@ -17,12 +17,14 @@ class PurchaseRepository(private val purchaseDao: PurchaseDao, private val purch
         return purchaseDao.findById(id)
     }
 
-    suspend fun addPurchase(requestBody: RequestBody, purchase: PurchaseEntity){
+    suspend fun addPurchase(requestBody: RequestBody, purchase: PurchaseEntity): Boolean{
         // add to online first then update local
         if (purchaseApi.insertPurchase(requestBody).isSuccessful)
         {
             purchaseDao.insert(purchase)
+            return true
         }
+        return false
     }
 
     suspend fun updatePurchase(requestBody: RequestBody, purchase: PurchaseEntity): Boolean {

@@ -21,10 +21,13 @@ class PurchaseViewModel(application: Application): AndroidViewModel(application)
         repository = PurchaseRepository(purchaseDao)
     }
 
-    fun addPurchase(request: RequestBody, purchase: PurchaseEntity){
+    fun addPurchase(request: RequestBody, purchase: PurchaseEntity): MutableLiveData<Boolean>{
+        val result = MutableLiveData<Boolean>()
         viewModelScope.launch(Dispatchers.IO){
-            repository.addPurchase(request, purchase)
+            result.postValue(repository.addPurchase(request, purchase))
         }
+
+        return result
     }
 
     fun updatePurchase(request: RequestBody, purchase: PurchaseEntity): MutableLiveData<Boolean> {
