@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -76,11 +77,11 @@ class AddExpensesFragment : Fragment() {
             val purchase = PurchaseEntity(storeName, storeLoc, purchaseType, purTotal!!, LocalDateTime.parse(purchaseDate))
             val str = MoshiHelper.toJsonObject(PurchasesRequest::class.java, PurchasesRequest(UserViewModel.username, UserViewModel.password, purchase))
             val request = RequestBody.create(MediaType.parse("application/json"), str)
-            mPurchaseViewModel.addPurchase(request, purchase)
+            mPurchaseViewModel.addPurchase(request, purchase).observe(viewLifecycleOwner, Observer {
+                Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
 
-            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
-
-            findNavController().navigate(R.id.action_addexpensesFragment_to_dashboardFragment)
+                findNavController().navigate(R.id.action_addexpensesFragment_to_dashboardFragment)
+            })
 
         }else{
             Toast.makeText(requireContext(), "Please fill out all fields!", Toast.LENGTH_LONG).show()
