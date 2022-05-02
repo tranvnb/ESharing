@@ -1,8 +1,6 @@
 # ESharing - Screenshot of functionalities
 
-<p align = "center">
 ![image](https://user-images.githubusercontent.com/9379521/166304458-84d2c36b-d846-4ecb-945b-ed0f8d85bdad.png)
-</p>
   
 <p align = "center">
 Members request for joining household
